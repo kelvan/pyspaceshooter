@@ -1,20 +1,26 @@
 #!/usr/bin/env python
+from __future__ import print_function, unicode_literals
 
 import os
+from random import choice
+
 import pygame
-from pygame.locals import *
-from objects import *
+from pygame.locals import (
+    QUIT, KEYDOWN, KEYUP, K_ESCAPE, K_UP, K_LEFT, K_RIGHT, K_SPACE,
+    K_q, K_s, K_c, K_l, K_p, K_f
+)
+
+from objects import Ufo, Fighter
 import stats
 import config
-from random import randint, choice
 
 
 def main():
     if not pygame.font:
-        print 'Warning, fonts disabled'
+        print('Warning, fonts disabled')
         return
     if not pygame.mixer:
-        print 'Warning, sound disabled'
+        print('Warning, sound disabled')
 
     pygame.font.init()
     music = pygame.mixer.music
@@ -23,7 +29,7 @@ def main():
         try:
             music.load(os.path.join('data', 'music.ogg'))
         except:
-            print "No music"
+            print('No music')
             config.music = False
 
     pygame.init()
@@ -31,14 +37,13 @@ def main():
     pygame.display.set_caption('SpaceFight')
     pygame.mouse.set_visible(0)
 
-    background = pygame.image.load(os.path.join('data', \
-                                                'background.png')).convert()
+    background = pygame.image.load(
+        os.path.join('data', 'background.png')).convert()
 
     screen.blit(background, (0, 0))
     pygame.display.flip()
 
     clock = pygame.time.Clock()
-    spawn = True
     lastCast = pygame.time.get_ticks()
     lastPowerUp = pygame.time.get_ticks()
     enemies = pygame.sprite.RenderPlain(Ufo())
@@ -91,7 +96,7 @@ def main():
                     fighter.dx = 0
                 elif event.key == K_SPACE and fighter.shotType == fighter.shootRocket:
                     fighter.shooting = False
-                elif (event.key == K_UP  or event.key == K_l) and fighter.shotType == fighter.shootLaser:
+                elif (event.key == K_UP or event.key == K_l) and fighter.shotType == fighter.shootLaser:
                     fighter.shooting = False
                 elif event.key == K_c and fighter.shotType == fighter.shootSuperChicken:
                     fighter.shooting = False
@@ -121,4 +126,6 @@ def main():
         enemies.draw(screen)
         pygame.display.flip()
 
-main()
+
+if __name__ == '__main__':
+    main()
