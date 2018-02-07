@@ -1,5 +1,7 @@
 import pygame
-from utils import *
+
+from utils import load_image, laserSound, rocketSound, explodeSound, \
+    missleExplosion, scream, load_sliced_sprites, chickenSound
 import stats
 
 
@@ -43,17 +45,17 @@ class Shot(pygame.sprite.Sprite):
 
 
 class Rocket(Shot):
-    def __init__(self, x, y, enemies, power=5, speed= -5):
+    def __init__(self, x, y, enemies, power=5, speed=-5):
         Shot.__init__(self, x, y, 'rocket.png', enemies, power, speed)
 
 
 class Laser(Shot):
-    def __init__(self, x, y, enemies, power=2, speed= -10):
+    def __init__(self, x, y, enemies, power=2, speed=-10):
         Shot.__init__(self, x, y, 'laser.png', enemies, power, speed)
 
 
 class SuperChicken(Shot):
-    def __init__(self, x, y, enemies, power=200, speed= -25):
+    def __init__(self, x, y, enemies, power=200, speed=-25):
         Shot.__init__(self, x, y, 'superchicken.png', enemies, power, speed)
 
 
@@ -101,7 +103,8 @@ class Fighter(pygame.sprite.Sprite):
         d = min(delay / stats.bonus['rspeed'], mindelay)
         if pygame.time.get_ticks() - self._last_update > d:
             self._last_update = pygame.time.get_ticks()
-            self.shots.add(Rocket(self.rect.centerx, self.rect.top, self.enemies))
+            rocket = Rocket(self.rect.centerx, self.rect.top, self.enemies)
+            self.shots.add(rocket)
             stats.shots += 1
             rocketSound.play()
 
@@ -109,7 +112,8 @@ class Fighter(pygame.sprite.Sprite):
         d = min(delay / stats.bonus['rspeed'], mindelay)
         if pygame.time.get_ticks() - self._last_update > d:
             self._last_update = pygame.time.get_ticks()
-            self.shots.add(Laser(self.rect.centerx, self.rect.top, self.enemies))
+            laser = Laser(self.rect.centerx, self.rect.top, self.enemies)
+            self.shots.add(laser)
             stats.shots += 1
             laserSound.play()
 
@@ -117,13 +121,16 @@ class Fighter(pygame.sprite.Sprite):
         d = min(delay / stats.bonus['rspeed'], mindelay)
         if pygame.time.get_ticks() - self._last_update > d:
             self._last_update = pygame.time.get_ticks()
-            self.shots.add(SuperChicken(self.rect.centerx, self.rect.top, self.enemies))
+            chicken = SuperChicken(self.rect.centerx, self.rect.top,
+                                   self.enemies)
+            self.shots.add(chicken)
             stats.shots += 1
             chickenSound.play()
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image, life, speed, minspeed=None, bombdelay=None, bomb=None, explodeimg='explode.png'):
+    def __init__(self, image, life, speed, minspeed=None, bombdelay=None,
+                 bomb=None, explodeimg='explode.png'):
         if not minspeed:
             self.minspeed = speed / 2
         pygame.sprite.Sprite.__init__(self)
@@ -148,7 +155,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def _move(self):
         if self.rect.left > self.area.right or \
-            self.rect.right < self.area.left:
+           self.rect.right < self.area.left:
             if self.rect.bottom <= self.area.bottom - 128:
                 self.rect.centery += 40
             else:
@@ -194,6 +201,7 @@ class Enemy(pygame.sprite.Sprite):
                 stats.kills += 1
             self.image = self.explodeImages[self._frame]
             self._last_update = t
+
 
 class Ufo(Enemy):
     def __init__(self):

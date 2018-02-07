@@ -1,6 +1,10 @@
-import pygame
-from utils import *
+from __future__ import print_function, unicode_literals
+
 from random import randint
+
+import pygame
+
+from utils import powerUpSound, load_image, load_sliced_sprites
 import stats
 
 
@@ -18,7 +22,8 @@ class PowerUp(pygame.sprite.Sprite):
         self.image, self.rect = load_image(image, -1)
         self.images = load_sliced_sprites(32, 32, images)
         self.player = player
-        self.power = 0.1 # powerup strength
+        # powerup strength
+        self.power = 0.1
         self.rect.top = 0
         self.rect.left = randint(0, self.area.right - 32)
         self.bonus = 0
@@ -53,7 +58,8 @@ class PowerUp(pygame.sprite.Sprite):
         stats.bonus[self.bonus] += self.power
 
     def fade(self):
-        print "got powerup"
+        print('got powerup')
+
 
 class SpeedPowerUp(PowerUp):
     def __init__(self, player):
@@ -61,7 +67,8 @@ class SpeedPowerUp(PowerUp):
         self.bonus = 'speed'
 
     def fade(self):
-        print "got speed powerup"
+        print('got speed powerup')
+
 
 class BulletSpeedPowerUp(PowerUp):
     def __init__(self, player):
@@ -69,7 +76,8 @@ class BulletSpeedPowerUp(PowerUp):
         self.bonus = 'bspeed'
 
     def fade(self):
-        print "got bullet speed powerup"
+        print('got bullet speed powerup')
+
 
 class ReloadSpeedPowerUp(PowerUp):
     def __init__(self, player):
@@ -77,7 +85,8 @@ class ReloadSpeedPowerUp(PowerUp):
         self.bonus = 'rspeed'
 
     def fade(self):
-        print "got reload powerup"
+        print('got reload powerup')
+
 
 class PowerPowerUp(PowerUp):
     def __init__(self, player):
@@ -85,7 +94,8 @@ class PowerPowerUp(PowerUp):
         self.bonus = 'power'
 
     def fade(self):
-        print "got power powerup"
+        print('got power powerup')
+
 
 class SlowDownPowerUp(PowerUp):
     def __init__(self, player):
@@ -93,4 +103,4 @@ class SlowDownPowerUp(PowerUp):
         self.bonus = 'slowdown'
 
     def fade(self):
-        print "got slowdown powerup"
+        print('got slowdown powerup')

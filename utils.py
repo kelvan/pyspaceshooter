@@ -1,6 +1,9 @@
-import pygame
-from pygame.locals import *
+from __future__ import print_function, unicode_literals
+
 import os
+
+import pygame
+from pygame.locals import RLEACCEL
 
 
 def load_image(name, colorkey=None):
@@ -8,8 +11,8 @@ def load_image(name, colorkey=None):
     try:
         image = pygame.image.load(fullname)
     except pygame.error, message:
-        print 'Cannot load image:', name
-        raise SystemExit, message
+        print('Cannot load image:', name)
+        raise SystemExit(message)
     image = image.convert_alpha()
     if colorkey is not None:
         if colorkey is - 1:
@@ -27,8 +30,8 @@ def load_sound(name):
     try:
         sound = pygame.mixer.Sound(fullname)
     except pygame.error, message:
-        print 'Cannot load sound:', fullname
-        raise SystemExit, message
+        print('Cannot load sound:', fullname)
+        raise SystemExit(message)
     return sound
 
 
@@ -41,7 +44,9 @@ def load_sliced_sprites(w, h, filename):
     Assuming you ressources directory is named "data"
     '''
     images = []
-    master_image = pygame.image.load(os.path.join('data', filename)).convert_alpha()
+    master_image = pygame.image.load(
+        os.path.join('data', filename)
+    ).convert_alpha()
 
     master_width, master_height = master_image.get_size()
     for i in xrange(int(master_width / w)):
